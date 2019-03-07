@@ -65,16 +65,22 @@ def process_folder(
   for media_type in exports_media_types:
     create_dir(exports_folder.joinpath(media_type))
 
-  # Create a folder based on current date to keep this sorted.
-  working_folder = working_folder.joinpath(
-      current_datetime.strftime('%B %d')
-  )
-  create_dir(working_folder)
-
 
   # Create photo and video backup folders
   photo_folder = working_folder.joinpath('Photo')
   video_folder = working_folder.joinpath('Video')
   create_dir(photo_folder)
   create_dir(video_folder)
-  create_device_folders(photo_folder, video_folder)
+
+  # Create a folder based on current date to keep this sorted.
+  photo_working_folder = photo_folder.joinpath(
+      current_datetime.strftime('%B %d')
+  )
+  create_dir(photo_working_folder)
+  video_working_folder = video_folder.joinpath(
+    current_datetime.strftime('%B %d')
+  )
+  create_dir(video_working_folder)
+
+
+  create_device_folders(photo_working_folder, video_working_folder)

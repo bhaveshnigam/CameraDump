@@ -102,7 +102,7 @@ def dump_card(source_card_path, destination_path, backup_folder_name,
       ).joinpath(
           '%s/%s/%s/%s/RAW/%s/%s%s' % (
               created_date.year, backup_folder_name,
-              created_date.strftime('%B %d'), media_type, source_device_type,
+              media_type, created_date.strftime('%B %d'), source_device_type,
               file.stem, file.suffix,
           )
       )

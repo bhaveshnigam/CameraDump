@@ -27,14 +27,14 @@ parser.add_argument(
          "meant to be created. Eg. ~/Downloads/",
     required=True
 )
-parser.add_argument(
-    "-b", "--backup_folder",
-    dest="backup_folder_name",
-    type=str,
-    help="The umbrella folder name under which the backup folders for each "
-         "media device needs to be created",
-    required=True
-)
+# parser.add_argument(
+#     "-b", "--backup_folder",
+#     dest="backup_folder_name",
+#     type=str,
+#     help="The umbrella folder name under which the backup folders for each "
+#          "media device needs to be created",
+#     required=True
+# )
 
 parser.add_argument(
     "-skip", "--skip_file_types",
@@ -53,15 +53,24 @@ DEVICE_TYPE_FOLDER_MAP = {
   'D7200': 'D7200',
   'iPhone': 'iPhoneXS',
   'Mavic': 'MavicAir',
-  'SJCAM': 'SJCam'
+  'SJCAM': 'SJCam',
+  'MavicAir': 'MavicAir',
 }
 
-def dump_card(source_card_path, destination_path, backup_folder_name,
-              skip_file_types):
+
+universal_skip_file_type = [
+  'THM', '.db'
+]
+
+
+def dump_card(source_card_path, destination_path, skip_file_types):
 
   # Argparser can provide this argument as None
   if not skip_file_types:
     skip_file_types = []
+
+  skip_file_types.extend(universal_skip_file_type)
+
 
   source_card = pathlib.Path(source_card_path)
 
@@ -75,7 +84,10 @@ def dump_card(source_card_path, destination_path, backup_folder_name,
       metadata_string = magic.from_file(str(file))
 
       media_type = ''
-      if 'movie' in metadata_string.lower():
+      if (('movie' in metadata_string.lower()) or
+          ('mp4' in metadata_string.lower()) or
+          ('video' in metadata_string.lower())
+      ):
         media_type = 'Video'
       elif 'image' in metadata_string.lower():
         media_type = 'Photo'
@@ -83,25 +95,30 @@ def dump_card(source_card_path, destination_path, backup_folder_name,
       if not media_type:
         continue
 
-      time_obj = time.localtime(file.stat().st_ctime)
+      time_obj = time.localtime(file.stat().st_mtime)
       created_date = datetime.datetime(
           year=time_obj.tm_year, month=time_obj.tm_mon, day=time_obj.tm_mday,
           hour=time_obj.tm_hour, minute=time_obj.tm_min, second=time_obj.tm_sec
       )
       if created_date not in processed_dates:
         processed_dates.append(created_date)
-        process_folder(destination_path, backup_folder_name, created_date)
+        process_folder(destination_path, created_date)
 
       source_device_type = 'ThirdPartySource'
+      device_name_tokens = [i for i in str(file).split('/') if i]
       for device_uid in DEVICE_TYPE_FOLDER_MAP.keys():
         if device_uid.lower() in metadata_string.lower():
           source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
+          break
+        for i in device_name_tokens:
+          if i.lower() == device_uid.lower():
+            source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
 
       target_file_path = pathlib.Path(
           destination_path
       ).joinpath(
-          '%s/%s/%s/%s/RAW/%s/%s%s' % (
-              created_date.year, backup_folder_name,
+          '%s/%s/%s/%s/RAW/%s%s' % (
+              created_date.year,
               media_type, created_date.strftime('%B %d'), source_device_type,
               file.stem, file.suffix,
           )
@@ -111,4 +128,4 @@ def dump_card(source_card_path, destination_path, backup_folder_name,
 
 if __name__ == '__main__':
   dump_card(args.source_memory_card, args.destination_folder,
-            args.backup_folder_name, args.skip_file_type)
+            args.skip_file_type)

@@ -14,16 +14,18 @@ parser.add_argument(
          "meant to be created. Eg. ~/Downloads/",
     required=True
 )
-parser.add_argument(
-    "-b", "--backup_folder",
-    dest="backup_folder_name",
-    type=str,
-    help="The umbrella folder name under which the backup folders for each "
-         "media device needs to be created",
-    required=True
-)
+# parser.add_argument(
+#     "-b", "--backup_folder",
+#     dest="backup_folder_name",
+#     type=str,
+#     help="The umbrella folder name under which the backup folders for each "
+#          "media device needs to be created",
+#     required=True
+# )
 
 args = parser.parse_args()
 
 if __name__ == '__main__':
-  process_folder(args.destination_folder, args.backup_folder_name)
+  process_folder(args.destination_folder
+                 # , args.backup_folder_name
+  )

@@ -34,8 +34,7 @@ def create_device_folders(photo_folder, video_folder):
 
 
 def process_folder(
-    destination_folder, backup_folder_name,
-    current_datetime=datetime.datetime.now()
+    destination_folder, current_datetime=datetime.datetime.now()
 ):
   destination_folder = pathlib.Path(destination_folder)
   destination_folder = destination_folder.expanduser()
@@ -50,9 +49,9 @@ def process_folder(
   )
   create_dir(working_folder)
 
-  # Create a folder based on the event/target folder name
-  working_folder = working_folder.joinpath(backup_folder_name)
-  create_dir(working_folder)
+  # # Create a folder based on the event/target folder name
+  # working_folder = working_folder.joinpath(backup_folder_name)
+  # create_dir(working_folder)
 
   # Create exports folder
   exports_folder = working_folder.joinpath('Exports')

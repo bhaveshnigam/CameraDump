@@ -23,18 +23,14 @@ SUPPORTED_DEVICE_NAMES = [
 ]
 
 def create_device_folders(photo_folder, video_folder):
-  raw_photo_folder = photo_folder.joinpath('RAW')
-  raw_video_folder = video_folder.joinpath('RAW')
-  create_dir(raw_photo_folder)
-  create_dir(raw_video_folder)
-
   for device_name in SUPPORTED_DEVICE_NAMES:
-    create_dir(raw_video_folder.joinpath(device_name))
-    create_dir(raw_photo_folder.joinpath(device_name))
+    create_dir(photo_folder.joinpath(device_name))
+    create_dir(video_folder.joinpath(device_name))
 
 
 def process_folder(
-    destination_folder, current_datetime=datetime.datetime.now()
+    destination_folder, backup_folder_name,
+    current_datetime=datetime.datetime.now()
 ):
   destination_folder = pathlib.Path(destination_folder)
   destination_folder = destination_folder.expanduser()
@@ -43,43 +39,49 @@ def process_folder(
     print ('The destination folder does not exist, attempting to create one')
     create_dir(destination_folder)
 
-  # Create current year folder
-  working_folder = destination_folder.joinpath(
-      current_datetime.strftime('%Y')
-  )
-  create_dir(working_folder)
-
-  # # Create a folder based on the event/target folder name
-  # working_folder = working_folder.joinpath(backup_folder_name)
-  # create_dir(working_folder)
-
-  # Create exports folder
-  exports_folder = working_folder.joinpath('Exports')
-  create_dir(exports_folder)
-  exports_media_types = [
-    'Instagram',
-    'Full size',
-    'Stylised'
-  ]
-  for media_type in exports_media_types:
-    create_dir(exports_folder.joinpath(media_type))
-
-
   # Create photo and video backup folders
-  photo_folder = working_folder.joinpath('Photo')
-  video_folder = working_folder.joinpath('Video')
+  photo_folder = destination_folder.joinpath('Photo')
+  video_folder = destination_folder.joinpath('Video')
   create_dir(photo_folder)
   create_dir(video_folder)
 
-  # Create a folder based on current date to keep this sorted.
-  photo_working_folder = photo_folder.joinpath(
-      current_datetime.strftime('%B %d')
-  )
+  photo_working_folder = None
+  video_working_folder = None
+  for index, folder in enumerate([photo_folder, video_folder]):
+    # Create exports folder
+    exports_folder = folder.joinpath('Exports')
+    create_dir(exports_folder)
+    exports_media_types = [
+      'Instagram',
+      'Full size',
+      'Stylised'
+    ]
+    for media_type in exports_media_types:
+      create_dir(exports_folder.joinpath(media_type))
+
+    raw_folder = folder.joinpath('RAW')
+    create_dir(raw_folder)
+
+    raw_folder = raw_folder.joinpath(current_datetime.strftime('%Y'))
+    create_dir(raw_folder)
+
+    if index == 0:
+      photo_working_folder = raw_folder
+    elif index == 1:
+      video_working_folder = raw_folder
+
+  # Create a folder based on the event/target folder name
+  photo_working_folder = photo_working_folder.joinpath(backup_folder_name)
   create_dir(photo_working_folder)
-  video_working_folder = video_folder.joinpath(
-    current_datetime.strftime('%B %d')
-  )
+  # Create a folder based on the event/target folder name
+  video_working_folder = video_working_folder.joinpath(backup_folder_name)
   create_dir(video_working_folder)
 
-
   create_device_folders(photo_working_folder, video_working_folder)
+
+
+def get_initials(name, join_by=''):
+  if len(name) == 0:
+    return ''
+  initials = [i[0].upper() for i in name.split()]
+  return join_by.join(initials)

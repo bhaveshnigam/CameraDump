@@ -2,10 +2,12 @@ import datetime
 import argparse
 import pathlib
 import time
+from shutil import copy2
+
 import magic
 from tqdm import tqdm
 
-from utils import process_folder
+from utils import process_folder, get_initials
 
 parser = argparse.ArgumentParser(
     description="This script enables dumping/copying of a memory card in an "
@@ -27,14 +29,14 @@ parser.add_argument(
          "meant to be created. Eg. ~/Downloads/",
     required=True
 )
-# parser.add_argument(
-#     "-b", "--backup_folder",
-#     dest="backup_folder_name",
-#     type=str,
-#     help="The umbrella folder name under which the backup folders for each "
-#          "media device needs to be created",
-#     required=True
-# )
+parser.add_argument(
+    "-b", "--backup_folder",
+    dest="backup_folder_name",
+    type=str,
+    help="The umbrella folder name under which the backup folders for each "
+         "media device needs to be created",
+    required=True
+)
 
 parser.add_argument(
     "-skip", "--skip_file_types",
@@ -63,7 +65,7 @@ universal_skip_file_type = [
 ]
 
 
-def dump_card(source_card_path, destination_path, skip_file_types):
+def dump_card(source_card_path, destination_path, skip_file_types, backup_folder_name):
 
   # Argparser can provide this argument as None
   if not skip_file_types:
@@ -102,7 +104,7 @@ def dump_card(source_card_path, destination_path, skip_file_types):
       )
       if created_date not in processed_dates:
         processed_dates.append(created_date)
-        process_folder(destination_path, created_date)
+        process_folder(destination_path, backup_folder_name, created_date)
 
       source_device_type = 'ThirdPartySource'
       device_name_tokens = [i for i in str(file).split('/') if i]
@@ -114,18 +116,19 @@ def dump_card(source_card_path, destination_path, skip_file_types):
           if i.lower() == device_uid.lower():
             source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
 
+      folder_initials = get_initials(backup_folder_name)
       target_file_path = pathlib.Path(
           destination_path
       ).joinpath(
-          '%s/%s/%s/%s/RAW/%s%s' % (
-              created_date.year,
-              media_type, created_date.strftime('%B %d'), source_device_type,
-              file.stem, file.suffix,
+          '%s/RAW/%s/%s/%s/%s-%s%s' % (
+              media_type, created_date.year, backup_folder_name,
+              source_device_type, folder_initials, file.stem, file.suffix,
           )
       )
-      target_file_path.write_bytes(file.read_bytes())
+      copy2(str(file), str(target_file_path))
 
 
 if __name__ == '__main__':
   dump_card(args.source_memory_card, args.destination_folder,
-            args.skip_file_type)
+            args.skip_file_type, args.backup_folder_name)
+

@@ -34,13 +34,12 @@ class MainWindow(QMainWindow):
 
     progress_bar = self.ui.progressBar
 
-    dump_card(
+    retval = dump_card(
       source_card_path=source_directory,
       destination_path=target_directory,
       backup_folder_name=target_project_name,
       qwidget_progress_bar=progress_bar
     )
-    import ipdb; ipdb.set_trace()
     sys.exit(0)
 
   def reject(self, *args, **kwargs):

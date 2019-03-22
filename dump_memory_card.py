@@ -65,7 +65,10 @@ universal_skip_file_type = [
 ]
 
 
-def dump_card(source_card_path, destination_path, skip_file_types, backup_folder_name):
+def dump_card(
+    source_card_path, destination_path, skip_file_types, backup_folder_name,
+    qwidget_progress_bar=None
+):
 
   # Argparser can provide this argument as None
   if not skip_file_types:
@@ -77,7 +80,13 @@ def dump_card(source_card_path, destination_path, skip_file_types, backup_folder
   source_card = pathlib.Path(source_card_path)
 
   processed_dates = []
-  for file in tqdm(list(source_card.glob('**/*'))):
+  all_files = list(source_card.glob('**/*'))
+  total_len = len(all_files)
+  for index, file in enumerate(tqdm(all_files, unit='file')):
+    if qwidget_progress_bar is not None:
+      percent_done = (index//total_len) * 100
+      qwidget_progress_bar.setValue(percent_done)
+
     if file.is_file():
       if ((file.suffix in skip_file_types) or
           (file.suffix.replace('.', '') in skip_file_types)):
@@ -126,6 +135,7 @@ def dump_card(source_card_path, destination_path, skip_file_types, backup_folder
           )
       )
       copy2(str(file), str(target_file_path))
+  return True
 
 
 if __name__ == '__main__':

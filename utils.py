@@ -1,5 +1,10 @@
 import datetime
 import pathlib
+import time
+from shutil import copy2
+
+import magic
+from tqdm import tqdm
 
 
 def create_dir(expanded_path):
@@ -21,6 +26,23 @@ SUPPORTED_DEVICE_NAMES = [
     'iPhoneXS',
     'ThirdPartySource'
 ]
+
+
+DEVICE_TYPE_FOLDER_MAP = {
+  'D7200': 'D7200',
+  'iPhone': 'iPhoneXS',
+  'Mavic': 'MavicAir',
+  'SJCAM': 'SJCam',
+  'MavicAir': 'MavicAir',
+}
+
+
+universal_skip_file_type = [
+  'THM', '.db'
+]
+
+
+
 
 def create_device_folders(photo_folder, video_folder):
   for device_name in SUPPORTED_DEVICE_NAMES:
@@ -85,3 +107,77 @@ def get_initials(name, join_by=''):
     return ''
   initials = [i[0].upper() for i in name.split()]
   return join_by.join(initials)
+
+
+def dump_card(
+    source_card_path, destination_path, skip_file_types, backup_folder_name,
+    qt_application=None, progress_bar=None
+):
+
+  # Argparser can provide this argument as None
+  if not skip_file_types:
+    skip_file_types = []
+
+  skip_file_types.extend(universal_skip_file_type)
+
+  source_card = pathlib.Path(source_card_path)
+
+  processed_dates = []
+  all_files = list(source_card.glob('**/*'))
+  total_len = len(all_files)
+  for index, file in enumerate(tqdm(all_files, unit='file')):
+    if (qt_application is not None and
+        progress_bar is not  None):
+      percent_done = int(((index+1)/total_len) * 100)
+      progress_bar.setProperty('value', percent_done)
+      qt_application.processEvents()
+
+    if file.is_file():
+      if ((file.suffix in skip_file_types) or
+          (file.suffix.replace('.', '') in skip_file_types)):
+        continue
+
+      metadata_string = magic.from_file(str(file))
+
+      media_type = ''
+      if (('movie' in metadata_string.lower()) or
+          ('mp4' in metadata_string.lower()) or
+          ('video' in metadata_string.lower())
+      ):
+        media_type = 'Video'
+      elif 'image' in metadata_string.lower():
+        media_type = 'Photo'
+
+      if not media_type:
+        continue
+
+      time_obj = time.localtime(file.stat().st_mtime)
+      created_date = datetime.datetime(
+          year=time_obj.tm_year, month=time_obj.tm_mon, day=time_obj.tm_mday,
+          hour=time_obj.tm_hour, minute=time_obj.tm_min, second=time_obj.tm_sec
+      )
+      if created_date not in processed_dates:
+        processed_dates.append(created_date)
+        process_folder(destination_path, backup_folder_name, created_date)
+
+      source_device_type = 'ThirdPartySource'
+      device_name_tokens = [i for i in str(file).split('/') if i]
+      for device_uid in DEVICE_TYPE_FOLDER_MAP.keys():
+        if device_uid.lower() in metadata_string.lower():
+          source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
+          break
+        for i in device_name_tokens:
+          if i.lower() == device_uid.lower():
+            source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
+
+      folder_initials = get_initials(backup_folder_name)
+      target_file_path = pathlib.Path(
+          destination_path
+      ).joinpath(
+          '%s/RAW/%s/%s/%s/%s-%s%s' % (
+              media_type, created_date.year, backup_folder_name,
+              source_device_type, folder_initials, file.stem, file.suffix,
+          )
+      )
+      copy2(str(file), str(target_file_path))
+  return True

@@ -1,4 +1,5 @@
 import datetime
+import os
 import pathlib
 import time
 from shutil import copy2
@@ -180,4 +181,21 @@ def dump_card(
           )
       )
       copy2(str(file), str(target_file_path))
+  clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
+  clear_empty_folders('%s/%s' % (destination_path, 'Video'))
   return True
+
+
+def clear_empty_folders(folder_path):
+  folder_path = pathlib.Path(folder_path)
+  for path in folder_path.expanduser().iterdir():
+    if '.DS_Store' in str(path):
+      os.remove(str(path))
+      continue
+    if path.is_dir():
+      if list(path.iterdir()):
+        clear_empty_folders(str(path))
+      try:
+        path.rmdir()
+      except OSError:
+        pass

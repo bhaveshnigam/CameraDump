@@ -8,8 +8,6 @@ from UI.dump_media_device import Ui_Dialog
 from utils import dump_card
 
 
-
-
 class MainWindow(QMainWindow):
   def __init__(self, app):
     super(MainWindow, self).__init__()
@@ -34,9 +32,6 @@ class MainWindow(QMainWindow):
     source_directory = self.ui.comboBox.currentText()
     target_directory = self.ui.comboBox_2.currentText()
     self.ui.okButton.setEnabled(False)
-
-    progress_update = QtCore.Signal(int)
-
 
     retval = dump_card(
       source_card_path=source_directory,

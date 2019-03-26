@@ -1,14 +1,13 @@
 import sys
 
 import psutil
-from PySide2 import QtCore
-from PySide2.QtWidgets import QApplication, QMainWindow
+from PyQt5 import QtWidgets
 
 from UI.dump_media_device import Ui_Dialog
 from utils import dump_card
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
   def __init__(self, app):
     super(MainWindow, self).__init__()
     self.app = app
@@ -51,7 +50,7 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
-  app = QApplication(sys.argv)
+  app = QtWidgets.QApplication(sys.argv)
 
   window = MainWindow(app=app)
   window.show()

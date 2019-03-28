@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/dump_media_device.ui'
+# Form implementation generated from reading ui file 'UI/dump_media_device.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.1
 #
@@ -28,17 +28,17 @@ class Ui_Dialog(object):
         self.label_2.setGeometry(QtCore.QRect(20, 70, 111, 16))
         self.label_2.setObjectName("label_2")
         self.line = QtWidgets.QFrame(Dialog)
-        self.line.setGeometry(QtCore.QRect(0, 180, 411, 20))
+        self.line.setGeometry(QtCore.QRect(0, 190, 411, 20))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.line_2 = QtWidgets.QFrame(Dialog)
-        self.line_2.setGeometry(QtCore.QRect(0, 130, 411, 21))
+        self.line_2.setGeometry(QtCore.QRect(0, 150, 411, 21))
         self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
         self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line_2.setObjectName("line_2")
         self.progressBar = QtWidgets.QProgressBar(Dialog)
-        self.progressBar.setGeometry(QtCore.QRect(10, 150, 391, 23))
+        self.progressBar.setGeometry(QtCore.QRect(10, 170, 391, 23))
         self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.comboBox = QtWidgets.QComboBox(Dialog)
@@ -52,6 +52,9 @@ class Ui_Dialog(object):
         self.comboBox_2.setGeometry(QtCore.QRect(150, 90, 231, 31))
         self.comboBox_2.setCurrentText("")
         self.comboBox_2.setObjectName("comboBox_2")
+        self.checkBox = QtWidgets.QCheckBox(Dialog)
+        self.checkBox.setGeometry(QtCore.QRect(20, 130, 131, 20))
+        self.checkBox.setObjectName("checkBox")
 
         self.retranslateUi(Dialog)
         self.okButton.accepted.connect(Dialog.accept)
@@ -63,6 +66,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dump media device"))
         self.label.setText(_translate("Dialog", "Project Name"))
         self.label_2.setText(_translate("Dialog", "Source Drive"))
-        self.label_3.setText(_translate("Dialog", "Trarget Drive"))
+        self.label_3.setText(_translate("Dialog", "Target Drive"))
+        self.checkBox.setText(_translate("Dialog", "Skip JPEG files"))
 
 

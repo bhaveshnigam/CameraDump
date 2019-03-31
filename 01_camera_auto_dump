@@ -1,9 +1,0 @@
-#!/bin/sh
-
-screen -d -m bash -c "/home/pi/Projects/cameradump/venv/bin/python /home/pi/Projects/cameradump/gui.py"
-
-
-# This file relies on usbmount, sudo apt-get install usbmount ; https://github.com/rbrito/usbmount
-# Copy this file to /etc/usbmount/mount.d
-# sudo cp 01_camera_auto_dump /etc/usbmount/mount.d
-# sudo chmod a+x /etc/usbmount/mount.d/01_camera_auto_dump

@@ -181,8 +181,8 @@ def dump_card(
           )
       )
       copy2(str(file), str(target_file_path))
-  clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
-  clear_empty_folders('%s/%s' % (destination_path, 'Video'))
+  # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
+  # clear_empty_folders('%s/%s' % (destination_path, 'Video'))
   return True
 
 

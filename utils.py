@@ -199,3 +199,32 @@ def clear_empty_folders(folder_path):
         path.rmdir()
       except OSError:
         pass
+
+
+def get_child_folder_names(target_path):
+  if not target_path:
+    return []
+
+  child_folders = []
+  for path in pathlib.Path(target_path).expanduser().iterdir():
+    if not path.is_dir():
+      continue
+    path_name = path.name
+    if path_name.startswith('__') and path_name.endswith('__'):
+      continue
+    if path_name.startswith('.'):
+      continue
+    if path_name.replace('-', '').isdigit():
+      continue
+    if path_name.isalnum() and len(path_name) == 4:
+      continue
+    child_folders.append(path.name)
+
+    try:
+      if list(path.iterdir()):
+        child_paths = get_child_folder_names(str(path))
+        child_folders.extend(child_paths)
+    except PermissionError:
+      continue
+
+  return list(set(child_folders))

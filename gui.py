@@ -2,9 +2,16 @@ import sys
 
 import psutil
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import QStringListModel
+
 
 from UI.dump_media_device import Ui_Dialog
-from utils import dump_card
+from utils import dump_card, get_child_folder_names
+
+
+def set_auto_complete_data(auto_complete_model, target_path=''):
+  autocomplete_data = get_child_folder_names(target_path)
+  auto_complete_model.setStringList(autocomplete_data)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -16,6 +23,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
     self.ui.progressBar.setProperty('value', 0)
 
+    self.completer = QtWidgets.QCompleter()
+    self.ui.lineEdit.setCompleter(self.completer)
+
+    self.autoCompleteModel = QStringListModel()
+    set_auto_complete_data(self.autoCompleteModel)
+
+    self.completer.setModel(self.autoCompleteModel)
+
+    self.ui.comboBox_2.currentIndexChanged.connect(self.updateDataModel, self.ui.comboBox_2.currentIndex())
+
     partitions = psutil.disk_partitions()
     for partition in partitions:
       mountpoint = partition.mountpoint
@@ -26,6 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
         continue
       self.ui.comboBox.addItem(mountpoint)
       self.ui.comboBox_2.addItem(mountpoint)
+
+  def updateDataModel(self, value):
+    set_auto_complete_data(self.autoCompleteModel, self.ui.comboBox_2.currentText())
 
   def accept(self, *args, **kwargs):
     target_project_name = self.ui.lineEdit.text()

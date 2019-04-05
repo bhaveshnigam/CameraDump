@@ -55,6 +55,9 @@ class Ui_Dialog(object):
         self.checkBox = QtWidgets.QCheckBox(Dialog)
         self.checkBox.setGeometry(QtCore.QRect(20, 130, 131, 20))
         self.checkBox.setObjectName("checkBox")
+        self.checkBox_2 = QtWidgets.QCheckBox(Dialog)
+        self.checkBox_2.setGeometry(QtCore.QRect(210, 130, 171, 20))
+        self.checkBox_2.setObjectName("checkBox_2")
 
         self.retranslateUi(Dialog)
         self.okButton.accepted.connect(Dialog.accept)
@@ -68,5 +71,6 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "Source Drive"))
         self.label_3.setText(_translate("Dialog", "Target Drive"))
         self.checkBox.setText(_translate("Dialog", "Skip JPEG files"))
+        self.checkBox_2.setText(_translate("Dialog", "Create Premiere folders"))
 
 

@@ -6,7 +6,7 @@ from PyQt5.QtCore import QStringListModel
 
 
 from UI.dump_media_device import Ui_Dialog
-from utils import dump_card, get_child_folder_names
+from utils import dump_card, get_child_folder_names, create_premiere_folders
 
 
 def set_auto_complete_data(auto_complete_model, target_path=''):
@@ -65,6 +65,11 @@ class MainWindow(QtWidgets.QMainWindow):
       qt_application=self.app,
       progress_bar=self.ui.progressBar
     )
+
+    if self.ui.checkBox_2.isChecked():
+      create_premiere_folders(
+        target_directory, target_project_name
+      )
     sys.exit(0)
 
   def update_progress_bar(self, progress_value):

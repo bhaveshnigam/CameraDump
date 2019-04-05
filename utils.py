@@ -51,6 +51,32 @@ def create_device_folders(photo_folder, video_folder):
     create_dir(video_folder.joinpath(device_name))
 
 
+def create_premiere_folders(destination_path, backup_folder_name):
+  destination_folder = pathlib.Path(destination_path).expanduser()
+
+  if not destination_folder.exists():
+    print ('The destination folder does not exist, attempting to create one')
+    create_dir(destination_folder)
+  video_folder = destination_folder.joinpath('Video')
+  create_dir(video_folder)
+
+  for folder in ['Premiere Projects', backup_folder_name]:
+    video_folder = video_folder.joinpath(folder)
+    create_dir(video_folder)
+
+  create_dir(video_folder.joinpath('AE'))
+  create_dir(video_folder.joinpath('MX'))
+  raw_file_folder = video_folder.joinpath('RAW')
+  create_dir(raw_file_folder)
+
+  for device_name in SUPPORTED_DEVICE_NAMES:
+    create_dir(raw_file_folder.joinpath(device_name))
+
+  create_dir(video_folder.joinpath('SFX'))
+  create_dir(video_folder.joinpath('ASSETS'))
+  create_dir(video_folder.joinpath('EXPORTS'))
+
+
 def process_folder(
     destination_folder, backup_folder_name,
     current_datetime=datetime.datetime.now()

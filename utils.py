@@ -75,6 +75,7 @@ def create_premiere_folders(destination_path, backup_folder_name):
   create_dir(video_folder.joinpath('SFX'))
   create_dir(video_folder.joinpath('ASSETS'))
   create_dir(video_folder.joinpath('EXPORTS'))
+  create_dir(video_folder.joinpath('PROJECT'))
 
 
 def process_folder(

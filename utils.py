@@ -228,8 +228,13 @@ def clear_empty_folders(folder_path):
         pass
 
 
-def get_child_folder_names(target_path):
+MAX_DEPTH_LEVEL = 5
+
+def get_child_folder_names(target_path, recursion_level=0):
   if not target_path:
+    return []
+
+  if recursion_level > MAX_DEPTH_LEVEL:
     return []
 
   child_folders = []
@@ -249,7 +254,8 @@ def get_child_folder_names(target_path):
 
     try:
       if list(path.iterdir()):
-        child_paths = get_child_folder_names(str(path))
+        child_paths = get_child_folder_names(str(path),
+                                             recursion_level=recursion_level+1)
         child_folders.extend(child_paths)
     except PermissionError:
       continue

@@ -27,7 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):
     self.ui.lineEdit.setCompleter(self.completer)
 
     self.autoCompleteModel = QStringListModel()
-    set_auto_complete_data(self.autoCompleteModel)
+    # set_auto_complete_data(self.autoCompleteModel)
 
     self.completer.setModel(self.autoCompleteModel)
 

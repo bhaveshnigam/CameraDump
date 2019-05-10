@@ -6,6 +6,7 @@ from shutil import copy2
 
 import magic
 from tqdm import tqdm
+import exifread
 
 
 def create_dir(expanded_path):
@@ -35,6 +36,7 @@ DEVICE_TYPE_FOLDER_MAP = {
   'Mavic': 'MavicAir',
   'SJCAM': 'SJCam',
   'MavicAir': 'MavicAir',
+  'DJI': 'MavicAir'
 }
 
 
@@ -192,6 +194,10 @@ def dump_card(
       device_name_tokens = [i for i in str(file).split('/') if i]
       for device_uid in DEVICE_TYPE_FOLDER_MAP.keys():
         if device_uid.lower() in metadata_string.lower():
+          source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
+          break
+        tags = exifread.process_file(open(str(file), 'rb'))
+        if device_uid in str(tags):
           source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
           break
         for i in device_name_tokens:

@@ -234,7 +234,7 @@ def clear_empty_folders(folder_path):
         pass
 
 
-MAX_DEPTH_LEVEL = 5
+MAX_DEPTH_LEVEL = 7
 
 def get_child_folder_names(target_path, recursion_level=0):
   if not target_path:

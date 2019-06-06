@@ -10,7 +10,7 @@ from utils import dump_card, get_child_folder_names, create_premiere_folders
 
 
 def set_auto_complete_data(auto_complete_model, target_path=''):
-  autocomplete_data = get_child_folder_names(target_path)
+  autocomplete_data = get_child_folder_names(target_path + '/Photo/')
   auto_complete_model.setStringList(autocomplete_data)
 
 

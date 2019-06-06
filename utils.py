@@ -254,6 +254,8 @@ def get_child_folder_names(target_path, recursion_level=0):
       continue
     if path_name.replace('-', '').isdigit():
       continue
+    if path_name.endswith('lrdata'):
+      continue
     if path_name.isalnum() and len(path_name) == 4:
       continue
     child_folders.append(path.name)

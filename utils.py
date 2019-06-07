@@ -32,6 +32,8 @@ SUPPORTED_DEVICE_NAMES = [
 
 DEVICE_TYPE_FOLDER_MAP = {
   'D7200': 'D7200',
+  'Nikon D7200': 'D7200',
+  'Nikon': 'D7200',
   'iPhone': 'iPhoneXS',
   'Mavic': 'MavicAir',
   'SJCAM': 'SJCam',
@@ -200,9 +202,11 @@ def dump_card(
         if device_uid in str(tags):
           source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
           break
+
         for i in device_name_tokens:
-          if i.lower() == device_uid.lower():
+          if i.lower() in device_uid.lower():
             source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
+            break
 
       folder_initials = get_initials(backup_folder_name)
       target_file_path = pathlib.Path(

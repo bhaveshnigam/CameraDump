@@ -80,11 +80,13 @@ def create_premiere_folders(destination_path, backup_folder_name):
   create_dir(video_folder.joinpath('ASSETS'))
   create_dir(video_folder.joinpath('EXPORTS'))
   create_dir(video_folder.joinpath('PROJECT'))
+  return raw_file_folder
 
 
 def process_folder(
     destination_folder, backup_folder_name,
-    current_datetime=datetime.datetime.now()
+    current_datetime=datetime.datetime.now(),
+    video_folder=None
 ):
   destination_folder = pathlib.Path(destination_folder)
   destination_folder = destination_folder.expanduser()
@@ -95,7 +97,10 @@ def process_folder(
 
   # Create photo and video backup folders
   photo_folder = destination_folder.joinpath('Photo')
-  video_folder = destination_folder.joinpath('Video')
+
+  if not video_folder:
+    video_folder = destination_folder.joinpath('Video')
+
   create_dir(photo_folder)
   create_dir(video_folder)
 
@@ -143,7 +148,7 @@ def get_initials(name, join_by=''):
 
 def dump_card(
     source_card_path, destination_path, skip_file_types, backup_folder_name,
-    qt_application=None, progress_bar=None
+    qt_application=None, progress_bar=None, do_create_premiere_folders=False
 ):
 
   # Argparser can provide this argument as None
@@ -188,9 +193,14 @@ def dump_card(
           year=time_obj.tm_year, month=time_obj.tm_mon, day=time_obj.tm_mday,
           hour=time_obj.tm_hour, minute=time_obj.tm_min, second=time_obj.tm_sec
       )
+
+      video_folder = None
+      if do_create_premiere_folders:
+        video_folder = create_premiere_folders(destination_path, backup_folder_name)
+
       if created_date not in processed_dates:
         processed_dates.append(created_date)
-        process_folder(destination_path, backup_folder_name, created_date)
+        process_folder(destination_path, backup_folder_name, created_date, video_folder)
 
       source_device_type = 'ThirdPartySource'
       device_name_tokens = [i for i in str(file).split('/') if i]

@@ -63,13 +63,14 @@ class MainWindow(QtWidgets.QMainWindow):
       backup_folder_name=target_project_name,
       skip_file_types=skip_file_types,
       qt_application=self.app,
-      progress_bar=self.ui.progressBar
+      progress_bar=self.ui.progressBar,
+      do_create_premiere_folders=self.ui.checkBox_2.isChecked()
     )
 
-    if self.ui.checkBox_2.isChecked():
-      create_premiere_folders(
-        target_directory, target_project_name
-      )
+    # if self.ui.checkBox_2.isChecked():
+    #   create_premiere_folders(
+    #     target_directory, target_project_name
+    #   )
     sys.exit(0)
 
   def update_progress_bar(self, progress_value):

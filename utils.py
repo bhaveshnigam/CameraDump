@@ -227,6 +227,14 @@ def dump_card(
               source_device_type, folder_initials, file.stem, file.suffix,
           )
       )
+      if media_type == 'Video' and do_create_premiere_folders:
+        target_file_path = pathlib.Path(
+            video_folder
+        ).joinpath(
+            '%s/%s-%s%s' % (
+              source_device_type, folder_initials, file.stem, file.suffix,
+          )
+        )
       copy2(str(file), str(target_file_path))
   # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
   # clear_empty_folders('%s/%s' % (destination_path, 'Video'))

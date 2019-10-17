@@ -181,7 +181,8 @@ def dump_card(
       media_type = ''
       if (('movie' in metadata_string.lower()) or
           ('mp4' in metadata_string.lower()) or
-          ('video' in metadata_string.lower())
+          ('video' in metadata_string.lower()) or
+          ('iso media' in metadata_string.lower())
       ):
         media_type = 'Video'
       elif 'image' in metadata_string.lower():

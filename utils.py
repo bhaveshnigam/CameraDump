@@ -26,7 +26,8 @@ SUPPORTED_DEVICE_NAMES = [
     'SJCam',
     'MavicAir',
     'iPhoneXS',
-    'ThirdPartySource'
+    'ThirdPartySource',
+    'A6400'
 ]
 
 
@@ -38,15 +39,16 @@ DEVICE_TYPE_FOLDER_MAP = {
   'Mavic': 'MavicAir',
   'SJCAM': 'SJCam',
   'MavicAir': 'MavicAir',
-  'DJI': 'MavicAir'
+  'DJI': 'MavicAir',
+  'Sony': 'A6400',
+  'Sony A6400': 'A6400',
+  'A6400': 'A6400'
 }
 
 
 universal_skip_file_type = [
   'THM', '.db'
 ]
-
-
 
 
 def create_device_folders(photo_folder, video_folder):

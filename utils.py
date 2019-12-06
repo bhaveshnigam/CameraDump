@@ -2,7 +2,8 @@ import datetime
 import os
 import pathlib
 import time
-from shutil import copy2
+import uuid
+from shutil import copy2, move
 
 import magic
 from tqdm import tqdm
@@ -51,7 +52,7 @@ universal_skip_file_type = [
 ]
 
 
-def create_device_folders(photo_folder, video_folder):
+def create_device_folders(photo_folder, video_folder=None):
   for device_name in SUPPORTED_DEVICE_NAMES:
     create_dir(photo_folder.joinpath(device_name))
     create_dir(video_folder.joinpath(device_name))
@@ -100,8 +101,10 @@ def process_folder(
   # Create photo and video backup folders
   photo_folder = destination_folder.joinpath('Photo')
 
+  video_folder_was_created = False
   if not video_folder:
     video_folder = destination_folder.joinpath('Video')
+    video_folder_was_created = True
 
   create_dir(photo_folder)
   create_dir(video_folder)
@@ -110,6 +113,11 @@ def process_folder(
   video_working_folder = None
   for index, folder in enumerate([photo_folder, video_folder]):
     # Create exports folder
+
+    # Handle already created premiere folder specially
+    if video_folder_was_created and index == 1:
+      continue
+
     exports_folder = folder.joinpath('Exports')
     create_dir(exports_folder)
     exports_media_types = [
@@ -134,11 +142,15 @@ def process_folder(
   # Create a folder based on the event/target folder name
   photo_working_folder = photo_working_folder.joinpath(backup_folder_name)
   create_dir(photo_working_folder)
-  # Create a folder based on the event/target folder name
-  video_working_folder = video_working_folder.joinpath(backup_folder_name)
-  create_dir(video_working_folder)
 
-  create_device_folders(photo_working_folder, video_working_folder)
+  create_device_folders_params = [photo_working_folder]
+  if video_folder_was_created:
+    # Create a folder based on the event/target folder name
+    video_working_folder = video_working_folder.joinpath(backup_folder_name)
+    create_dir(video_working_folder)
+    create_device_folders_params.append(video_working_folder)
+
+  create_device_folders(*create_device_folders_params)
 
 
 def get_initials(name, join_by=''):
@@ -150,7 +162,8 @@ def get_initials(name, join_by=''):
 
 def dump_card(
     source_card_path, destination_path, skip_file_types, backup_folder_name,
-    qt_application=None, progress_bar=None, do_create_premiere_folders=False
+    qt_application=None, progress_bar=None, do_create_premiere_folders=False,
+    clear_files_after_copy=False
 ):
 
   # Argparser can provide this argument as None
@@ -230,6 +243,16 @@ def dump_card(
               source_device_type, folder_initials, file.stem, file.suffix,
           )
       )
+      if target_file_path.exists():
+        uuid_small = str(uuid.uuid4())[:8]
+        target_file_path = pathlib.Path(
+          destination_path
+        ).joinpath(
+          '%s/RAW/%s/%s/%s/%s-%s-%s%s' % (
+            media_type, created_date.year, backup_folder_name,
+            source_device_type, folder_initials, file.stem, uuid_small, file.suffix,
+          )
+        )
       if media_type == 'Video' and do_create_premiere_folders:
         target_file_path = pathlib.Path(
             video_folder
@@ -238,7 +261,20 @@ def dump_card(
               source_device_type, folder_initials, file.stem, file.suffix,
           )
         )
-      copy2(str(file), str(target_file_path))
+        if target_file_path.exists():
+          uuid_small = str(uuid.uuid4())[:8]
+          target_file_path = pathlib.Path(
+            video_folder
+          ).joinpath(
+            '%s/%s-%s-%s%s' % (
+              source_device_type, folder_initials, file.stem, uuid_small, file.suffix,
+            )
+          )
+      if clear_files_after_copy:
+        move(str(file), str(target_file_path))
+      else:
+        copy2(str(file), str(target_file_path))
+
   # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
   # clear_empty_folders('%s/%s' % (destination_path, 'Video'))
   return True

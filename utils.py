@@ -55,7 +55,8 @@ universal_skip_file_type = [
 def create_device_folders(photo_folder, video_folder=None):
   for device_name in SUPPORTED_DEVICE_NAMES:
     create_dir(photo_folder.joinpath(device_name))
-    create_dir(video_folder.joinpath(device_name))
+    if video_folder:
+      create_dir(video_folder.joinpath(device_name))
 
 
 def create_premiere_folders(destination_path, backup_folder_name):

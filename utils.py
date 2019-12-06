@@ -116,7 +116,7 @@ def process_folder(
     # Create exports folder
 
     # Handle already created premiere folder specially
-    if video_folder_was_created and index == 1:
+    if not video_folder_was_created and index == 1:
       continue
 
     exports_folder = folder.joinpath('Exports')

@@ -729,3 +729,6 @@ pip-selfcheck.json
 
 
 .DS_Store
+
+# VS code files
+*.code-workspace

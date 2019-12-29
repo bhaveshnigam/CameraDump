@@ -42,10 +42,13 @@ DEVICE_TYPE_FOLDER_MAP = {
   'DJI': 'MavicAir',
   'Sony': 'A6400',
   'Sony A6400': 'A6400',
-  'A6400': 'A6400'
+  'A6400': 'A6400',
   'Z6': 'Z6',
   'Nikon Z6': 'Z6',
   'Nikon': 'Z6',
+  'Z 6': 'Z6',
+  'Nikon Z 6': 'Z6',
+  'NIKON Z 6': 'Z6',
 }
 
 

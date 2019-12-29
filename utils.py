@@ -23,7 +23,7 @@ def create_dir(expanded_path):
 
 
 SUPPORTED_DEVICE_NAMES = [
-    'D7200',
+    'Z6',
     'SJCam',
     'MavicAir',
     'iPhoneXS',
@@ -35,7 +35,6 @@ SUPPORTED_DEVICE_NAMES = [
 DEVICE_TYPE_FOLDER_MAP = {
   'D7200': 'D7200',
   'Nikon D7200': 'D7200',
-  'Nikon': 'D7200',
   'iPhone': 'iPhoneXS',
   'Mavic': 'MavicAir',
   'SJCAM': 'SJCam',
@@ -44,6 +43,9 @@ DEVICE_TYPE_FOLDER_MAP = {
   'Sony': 'A6400',
   'Sony A6400': 'A6400',
   'A6400': 'A6400'
+  'Z6': 'Z6',
+  'Nikon Z6': 'Z6',
+  'Nikon': 'Z6',
 }
 
 

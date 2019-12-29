@@ -3,7 +3,7 @@ import os
 import pathlib
 import time
 import uuid
-from shutil import copy2, move
+from shutil import copy2, move, rmtree
 
 import magic
 from tqdm import tqdm
@@ -280,6 +280,11 @@ def dump_card(
 
   # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
   # clear_empty_folders('%s/%s' % (destination_path, 'Video'))
+  if clear_files_after_copy:
+    try:
+      rmtree(pathlib.Path(source_card_path).expanduser())
+    except err:
+      pass
   return True
 
 

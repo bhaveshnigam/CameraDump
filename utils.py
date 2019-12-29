@@ -284,6 +284,7 @@ def dump_card(
     try:
       rmtree(pathlib.Path(source_card_path).expanduser())
     except err:
+      print('Error removing all files from source file folderg')
       pass
   return True
 

@@ -73,7 +73,7 @@ def create_premiere_folders(destination_path, backup_folder_name):
   video_folder = destination_folder.joinpath('Video')
   create_dir(video_folder)
 
-  for folder in ['Premiere Projects', backup_folder_name]:
+  for folder in ['Final cut Projects', backup_folder_name]:
     video_folder = video_folder.joinpath(folder)
     create_dir(video_folder)
 
@@ -120,7 +120,7 @@ def process_folder(
   for index, folder in enumerate([photo_folder, video_folder]):
     # Create exports folder
 
-    # Handle already created premiere folder specially
+    # Handle already created final cut folder specially
     if not video_folder_was_created and index == 1:
       continue
 
@@ -167,14 +167,12 @@ def get_initials(name, join_by=''):
 
 
 def dump_card(
-    source_card_path, destination_path, skip_file_types, backup_folder_name,
+    source_card_path, destination_path, backup_folder_name,
     qt_application=None, progress_bar=None, do_create_premiere_folders=False,
     clear_files_after_copy=False
 ):
 
-  # Argparser can provide this argument as None
-  if not skip_file_types:
-    skip_file_types = []
+  skip_file_types = []
 
   skip_file_types.extend(universal_skip_file_type)
 

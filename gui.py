@@ -53,15 +53,11 @@ class MainWindow(QtWidgets.QMainWindow):
     target_directory = self.ui.comboBox_2.currentText()
     self.ui.okButton.setEnabled(False)
 
-    skip_file_types = []
-    if self.ui.checkBox.isChecked():
-      skip_file_types = ['JPEG', 'JPG']
 
     retval = dump_card(
       source_card_path=source_directory,
       destination_path=target_directory,
       backup_folder_name=target_project_name,
-      skip_file_types=skip_file_types,
       qt_application=self.app,
       progress_bar=self.ui.progressBar,
       do_create_premiere_folders=self.ui.checkBox_2.isChecked(),

@@ -28,7 +28,8 @@ SUPPORTED_DEVICE_NAMES = [
     'MavicAir',
     'iPhoneXS',
     'ThirdPartySource',
-    'A6400'
+    'A6400',
+    'Insta360',
 ]
 
 
@@ -49,6 +50,8 @@ DEVICE_TYPE_FOLDER_MAP = {
   'Z 6': 'Z6',
   'Nikon Z 6': 'Z6',
   'NIKON Z 6': 'Z6',
+  'Insta360': 'Insta360',
+  'OneR': 'Insta360',
 }
 
 

@@ -287,8 +287,8 @@ def dump_card(
   if clear_files_after_copy:
     try:
       rmtree(pathlib.Path(source_card_path).expanduser())
-    except err:
-      print('Error removing all files from source file folderg')
+    except Exception as err:
+      print('Error removing all files from source file folder, err: %s' % err)
       pass
   return True
 

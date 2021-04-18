@@ -1,3 +1,4 @@
+import pathlib
 import sys
 
 import psutil
@@ -42,6 +43,9 @@ class MainWindow(QtWidgets.QMainWindow):
                 continue
             self.ui.comboBox.addItem(mountpoint)
             self.ui.comboBox_2.addItem(mountpoint)
+        home_directory = str(pathlib.Path('~').expanduser())
+        self.ui.comboBox.addItem(home_directory)
+        self.ui.comboBox_2.addItem(home_directory)
 
     def updateDataModel(self, value):
         set_auto_complete_data(self.autoCompleteModel, self.ui.comboBox_2.currentText())

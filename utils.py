@@ -25,8 +25,8 @@ def create_dir(expanded_path):
 SUPPORTED_DEVICE_NAMES = [
     'Z6',
     'SJCam',
-    'MavicAir',
-    'iPhoneXS',
+    'Drone',
+    'iPhone',
     'ThirdPartySource',
     'A6400',
     'Insta360',
@@ -35,20 +35,22 @@ SUPPORTED_DEVICE_NAMES = [
 DEVICE_TYPE_FOLDER_MAP = {
     'D7200': 'D7200',
     'Nikon D7200': 'D7200',
-    'iPhone': 'iPhoneXS',
-    'Mavic': 'MavicAir',
+    'iPhone': 'iPhone',
+    'Mavic': 'Drone',
     'SJCAM': 'SJCam',
-    'MavicAir': 'MavicAir',
-    'DJI': 'MavicAir',
+    'MavicAir': 'Drone',
+    'DJI': 'Drone',
     'Sony': 'A6400',
     'Sony A6400': 'A6400',
     'A6400': 'A6400',
+    'SONY': 'A6400',
     'Z6': 'Z6',
     'Nikon Z6': 'Z6',
     'Nikon': 'Z6',
     'Z 6': 'Z6',
     'Nikon Z 6': 'Z6',
     'NIKON Z 6': 'Z6',
+    'NIKON Z6': 'Z6',
     'Insta360': 'Insta360',
     'OneR': 'Insta360',
 }
@@ -65,7 +67,7 @@ def create_device_folders(photo_folder, video_folder=None):
             create_dir(video_folder.joinpath(device_name))
 
 
-def create_premiere_folders(destination_path, backup_folder_name):
+def create_final_cut_folders(destination_path, backup_folder_name):
     destination_folder = pathlib.Path(destination_path).expanduser()
 
     if not destination_folder.exists():
@@ -216,7 +218,7 @@ def dump_card(
 
             video_folder = None
             if do_create_premiere_folders:
-                video_folder = create_premiere_folders(destination_path, backup_folder_name)
+                video_folder = create_final_cut_folders(destination_path, backup_folder_name)
 
             if created_date not in processed_dates:
                 processed_dates.append(created_date)
@@ -224,11 +226,11 @@ def dump_card(
 
             source_device_type = 'ThirdPartySource'
             device_name_tokens = [i for i in str(file).split('/') if i]
+            tags = exifread.process_file(open(str(file), 'rb'))
             for device_uid in DEVICE_TYPE_FOLDER_MAP.keys():
                 if device_uid.lower() in metadata_string.lower():
                     source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                     break
-                tags = exifread.process_file(open(str(file), 'rb'))
                 if device_uid in str(tags):
                     source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                     break

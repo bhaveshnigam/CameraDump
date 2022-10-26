@@ -33,7 +33,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.ui.comboBox_2.currentIndexChanged.connect(self.updateDataModel, self.ui.comboBox_2.currentIndex())
 
-        partitions = psutil.disk_partitions()
+        partitions = psutil.disk_partitions(all=True)
         for partition in partitions:
             mountpoint = partition.mountpoint
             if (('private' in mountpoint) or

@@ -18,11 +18,10 @@ prompt-toolkit==2.0.9
 psutil==5.6.1
 ptyprocess==0.6.0
 Pygments==2.3.1
-PyQt5==5.15.6
-PyQt5-Qt5==5.15.2
-PyQt5-sip==12.9.0
+PyQt6==6.4.2
+PyQt6-Qt6==6.4.2
+PyQt6-sip==13.4.1
 python-magic==0.4.15
-shiboken2==5.12.1
 six==1.12.0
 sn3218==1.2.7
 toml==0.10.2

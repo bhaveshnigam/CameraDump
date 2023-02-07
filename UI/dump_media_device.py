@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 
 class Ui_Dialog(object):
@@ -16,8 +16,8 @@ class Ui_Dialog(object):
         Dialog.resize(432, 327)
         self.okButton = QtWidgets.QDialogButtonBox(Dialog)
         self.okButton.setGeometry(QtCore.QRect(30, 280, 371, 32))
-        self.okButton.setOrientation(QtCore.Qt.Horizontal)
-        self.okButton.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.okButton.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.okButton.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.okButton.setObjectName("okButton")
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(20, 20, 101, 21))
@@ -30,13 +30,13 @@ class Ui_Dialog(object):
         self.label_2.setObjectName("label_2")
         self.line = QtWidgets.QFrame(Dialog)
         self.line.setGeometry(QtCore.QRect(0, 260, 431, 20))
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line.setObjectName("line")
         self.line_2 = QtWidgets.QFrame(Dialog)
         self.line_2.setGeometry(QtCore.QRect(0, 210, 431, 21))
-        self.line_2.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line_2.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line_2.setObjectName("line_2")
         self.progressBar = QtWidgets.QProgressBar(Dialog)
         self.progressBar.setGeometry(QtCore.QRect(20, 230, 391, 23))

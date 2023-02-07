@@ -2,8 +2,8 @@ import pathlib
 import sys
 
 import psutil
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import QStringListModel
+from PyQt6 import QtWidgets
+from PyQt6.QtCore import QStringListModel, Qt
 
 from UI.dump_media_device import Ui_Dialog
 from utils import dump_card, get_child_folder_names
@@ -31,7 +31,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.completer.setModel(self.autoCompleteModel)
 
-        self.ui.comboBox_2.currentIndexChanged.connect(self.updateDataModel, self.ui.comboBox_2.currentIndex())
+        self.ui.comboBox_2.currentIndexChanged.connect(self.updateDataModel, type=Qt.ConnectionType.AutoConnection)
 
         partitions = psutil.disk_partitions(all=True)
         for partition in partitions:
@@ -85,4 +85,4 @@ if __name__ == "__main__":
     window = MainWindow(app=app)
     window.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

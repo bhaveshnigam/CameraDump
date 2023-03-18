@@ -76,7 +76,7 @@ def create_final_cut_folders(destination_path, backup_folder_name):
     video_folder = destination_folder.joinpath('Video')
     create_dir(video_folder)
 
-    for folder in ['Final cut Projects', backup_folder_name]:
+    for folder in ['Da Vinci Resolve Projects', backup_folder_name]:
         video_folder = video_folder.joinpath(folder)
         create_dir(video_folder)
 

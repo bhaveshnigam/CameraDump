@@ -71,5 +71,5 @@ class Ui_Dialog(object):
         self.label.setText(_translate("Dialog", "Project Name"))
         self.label_2.setText(_translate("Dialog", "Source Drive"))
         self.label_3.setText(_translate("Dialog", "Target Drive"))
-        self.checkBox_2.setText(_translate("Dialog", "Create Final cut folders"))
+        self.checkBox_2.setText(_translate("Dialog", "Create Video Project folders"))
         self.checkBox_3.setText(_translate("Dialog", "Clear files as it is copied"))

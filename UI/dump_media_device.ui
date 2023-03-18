@@ -153,7 +153,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Create Final cut folders</string>
+    <string>Create Video Project folders</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="checkBox_3">

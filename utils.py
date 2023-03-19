@@ -51,6 +51,7 @@ DEVICE_TYPE_FOLDER_MAP = {
     'Nikon Z 6': 'Z6',
     'NIKON Z 6': 'Z6',
     'NIKON Z6': 'Z6',
+    'NIKON Z6 ': 'Z6',
     'Insta360': 'Insta360',
     'OneR': 'Insta360',
 }
@@ -130,9 +131,7 @@ def process_folder(
         exports_folder = folder.joinpath('Exports')
         create_dir(exports_folder)
         exports_media_types = [
-            'Instagram',
             'Full size',
-            'Stylised'
         ]
         for media_type in exports_media_types:
             create_dir(exports_folder.joinpath(media_type))
@@ -150,6 +149,8 @@ def process_folder(
 
     # Create a folder based on the event/target folder name
     photo_working_folder = photo_working_folder.joinpath(backup_folder_name)
+    create_dir(photo_working_folder)
+    photo_working_folder = photo_working_folder.joinpath(current_datetime.strftime("%d-%b-%Y"))
     create_dir(photo_working_folder)
 
     create_device_folders_params = [photo_working_folder]

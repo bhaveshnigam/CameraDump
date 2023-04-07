@@ -278,9 +278,9 @@ def dump_card(
                         )
                     )
             if clear_files_after_copy:
-                move(str(file), str(target_file_path))
+                move(str(file), str(target_file_path.parent))
             else:
-                copy2(str(file), str(target_file_path))
+                copy2(str(file), str(target_file_path.parent))
 
     # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
     # clear_empty_folders('%s/%s' % (destination_path, 'Video'))

@@ -68,7 +68,7 @@ def create_device_folders(photo_folder, video_folder=None):
             create_dir(video_folder.joinpath(device_name))
 
 
-def create_final_cut_folders(destination_path, backup_folder_name):
+def create_video_project_folders(destination_path, backup_folder_name):
     destination_folder = pathlib.Path(destination_path).expanduser()
 
     if not destination_folder.exists():
@@ -219,7 +219,7 @@ def dump_card(
 
             video_folder = None
             if do_create_premiere_folders:
-                video_folder = create_final_cut_folders(destination_path, backup_folder_name)
+                video_folder = create_video_project_folders(destination_path, backup_folder_name)
 
             if created_date not in processed_dates:
                 processed_dates.append(created_date)
@@ -245,8 +245,8 @@ def dump_card(
             target_file_path = pathlib.Path(
                 destination_path
             ).joinpath(
-                '%s/RAW/%s/%s/%s/%s-%s%s' % (
-                    media_type, created_date.year, backup_folder_name,
+                '%s/RAW/%s/%s/%s/%s/%s-%s%s' % (
+                    media_type, created_date.year, backup_folder_name, created_date.strftime("%d-%b-%Y"),
                     source_device_type, folder_initials, file.stem, file.suffix,
                 )
             )
@@ -255,8 +255,8 @@ def dump_card(
                 target_file_path = pathlib.Path(
                     destination_path
                 ).joinpath(
-                    '%s/RAW/%s/%s/%s/%s-%s-%s%s' % (
-                        media_type, created_date.year, backup_folder_name,
+                    '%s/RAW/%s/%s/%s/%s/%s-%s-%s%s' % (
+                        media_type, created_date.year, backup_folder_name, created_date.strftime("%d-%b-%Y"),
                         source_device_type, folder_initials, file.stem, uuid_small, file.suffix,
                     )
                 )

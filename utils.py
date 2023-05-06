@@ -226,12 +226,18 @@ def dump_card(
                 process_folder(destination_path, backup_folder_name, created_date, video_folder)
 
             source_device_type = 'ThirdPartySource'
+            source_card_name = source_card.name
             device_name_tokens = [i for i in str(file).split('/') if i]
             tags = exifread.process_file(open(str(file), 'rb'))
             for device_uid in DEVICE_TYPE_FOLDER_MAP.keys():
+                if device_uid.lower() == source_card_name.lower():
+                    source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
+                    break
+
                 if device_uid.lower() in metadata_string.lower():
                     source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                     break
+
                 if device_uid in str(tags):
                     source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                     break
@@ -284,12 +290,12 @@ def dump_card(
 
     # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
     # clear_empty_folders('%s/%s' % (destination_path, 'Video'))
-    if clear_files_after_copy:
-        try:
-            rmtree(pathlib.Path(source_card_path).expanduser())
-        except Exception as err:
-            print('Error removing all files from source file folder, err: %s' % err)
-            pass
+    # if clear_files_after_copy:
+    #     try:
+    #         rmtree(pathlib.Path(source_card_path).expanduser(), ignore_errors=True)
+    #     except Exception as err:
+    #         print('Error removing all files from source file folder, err: %s' % err)
+    #         pass
     return True
 
 

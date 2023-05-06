@@ -56,9 +56,9 @@ class Ui_Dialog(object):
         self.checkBox_2 = QtWidgets.QCheckBox(Dialog)
         self.checkBox_2.setGeometry(QtCore.QRect(20, 160, 251, 20))
         self.checkBox_2.setObjectName("checkBox_2")
-        self.checkBox_3 = QtWidgets.QCheckBox(Dialog)
-        self.checkBox_3.setGeometry(QtCore.QRect(20, 190, 281, 20))
-        self.checkBox_3.setObjectName("checkBox_3")
+        # self.checkBox_3 = QtWidgets.QCheckBox(Dialog)
+        # self.checkBox_3.setGeometry(QtCore.QRect(20, 190, 281, 20))
+        # self.checkBox_3.setObjectName("checkBox_3")
 
         self.retranslateUi(Dialog)
         self.okButton.accepted.connect(Dialog.accept)
@@ -72,4 +72,4 @@ class Ui_Dialog(object):
         self.label_2.setText(_translate("Dialog", "Source Drive"))
         self.label_3.setText(_translate("Dialog", "Target Drive"))
         self.checkBox_2.setText(_translate("Dialog", "Create Video Project folders"))
-        self.checkBox_3.setText(_translate("Dialog", "Clear files as it is copied"))
+        # self.checkBox_3.setText(_translate("Dialog", "Clear files as it is copied"))

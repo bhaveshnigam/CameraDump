@@ -63,7 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
             qt_application=self.app,
             progress_bar=self.ui.progressBar,
             do_create_premiere_folders=self.ui.checkBox_2.isChecked(),
-            clear_files_after_copy=self.ui.checkBox_3.isChecked()
+            clear_files_after_copy=True,
         )
 
         # if self.ui.checkBox_2.isChecked():

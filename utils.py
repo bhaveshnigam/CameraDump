@@ -9,6 +9,8 @@ import exifread
 import magic
 from tqdm import tqdm
 
+from constants import DEVICE_TYPE_FOLDER_MAP, SUPPORTED_DEVICE_NAMES, universal_skip_file_type
+
 
 def create_dir(expanded_path):
     if not isinstance(expanded_path, pathlib.Path):
@@ -20,45 +22,6 @@ def create_dir(expanded_path):
         path.mkdir(exist_ok=True)
     except FileNotFoundError as err:
         print('Unable to create a directory, error: %s' % err)
-
-
-SUPPORTED_DEVICE_NAMES = [
-    'Z6',
-    'SJCam',
-    'Drone',
-    'iPhone',
-    'ThirdPartySource',
-    'A6400',
-    'Insta360',
-]
-
-DEVICE_TYPE_FOLDER_MAP = {
-    'D7200': 'D7200',
-    'Nikon D7200': 'D7200',
-    'iPhone': 'iPhone',
-    'Mavic': 'Drone',
-    'SJCAM': 'SJCam',
-    'MavicAir': 'Drone',
-    'DJI': 'Drone',
-    'Sony': 'A6400',
-    'Sony A6400': 'A6400',
-    'A6400': 'A6400',
-    'SONY': 'A6400',
-    'Z6': 'Z6',
-    'Nikon Z6': 'Z6',
-    'Nikon': 'Z6',
-    'Z 6': 'Z6',
-    'Nikon Z 6': 'Z6',
-    'NIKON Z 6': 'Z6',
-    'NIKON Z6': 'Z6',
-    'NIKON Z6 ': 'Z6',
-    'Insta360': 'Insta360',
-    'OneR': 'Insta360',
-}
-
-universal_skip_file_type = [
-    'THM', '.db'
-]
 
 
 def create_device_folders(photo_folder, video_folder=None):
@@ -192,17 +155,21 @@ def dump_card(
             qt_application.processEvents()
 
         if file.is_file():
-            if ((file.suffix in skip_file_types) or
-                    (file.suffix.replace('.', '') in skip_file_types)):
+            if (
+                (file.suffix in skip_file_types) or
+                (file.suffix.replace('.', '') in skip_file_types) or
+                (file.name in skip_file_types)
+            ):
                 continue
 
             metadata_string = magic.from_file(str(file))
 
             media_type = ''
-            if (('movie' in metadata_string.lower()) or
-                    ('mp4' in metadata_string.lower()) or
-                    ('video' in metadata_string.lower()) or
-                    ('iso media' in metadata_string.lower())
+            if (
+                ('movie' in metadata_string.lower()) or
+                ('mp4' in metadata_string.lower()) or
+                ('video' in metadata_string.lower()) or
+                ('iso media' in metadata_string.lower())
             ):
                 media_type = 'Video'
             elif 'image' in metadata_string.lower():
@@ -226,15 +193,15 @@ def dump_card(
                 process_folder(destination_path, backup_folder_name, created_date, video_folder)
 
             source_device_type = 'ThirdPartySource'
-            source_card_name = source_card.name
+            source_card_name = source_card.stem
             device_name_tokens = [i for i in str(file).split('/') if i]
             tags = exifread.process_file(open(str(file), 'rb'))
             for device_uid in DEVICE_TYPE_FOLDER_MAP.keys():
-                if device_uid.lower() == source_card_name.lower():
+                if device_uid.lower().strip() == source_card_name.lower().strip():
                     source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                     break
 
-                if device_uid.lower() in metadata_string.lower():
+                if device_uid.lower().strip() in metadata_string.lower().strip():
                     source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                     break
 
@@ -243,19 +210,29 @@ def dump_card(
                     break
 
                 for i in device_name_tokens:
-                    if i.lower() in device_uid.lower():
+                    if i.lower().strip() in device_uid.lower().strip():
                         source_device_type = DEVICE_TYPE_FOLDER_MAP[device_uid]
                         break
 
             folder_initials = get_initials(backup_folder_name)
-            target_file_path = pathlib.Path(
+            if source_device_type == "Insta360":
+                target_file_path = pathlib.Path(
                 destination_path
             ).joinpath(
-                '%s/RAW/%s/%s/%s/%s/%s-%s%s' % (
+                '%s/RAW/%s/%s/%s/%s/%s%s' % (
                     media_type, created_date.year, backup_folder_name, created_date.strftime("%d-%b-%Y"),
-                    source_device_type, folder_initials, file.stem, file.suffix,
+                    source_device_type, file.stem, file.suffix,
                 )
             )
+            else:
+                target_file_path = pathlib.Path(
+                    destination_path
+                ).joinpath(
+                    '%s/RAW/%s/%s/%s/%s/%s-%s%s' % (
+                        media_type, created_date.year, backup_folder_name, created_date.strftime("%d-%b-%Y"),
+                        source_device_type, folder_initials, file.stem, file.suffix,
+                    )
+                )
             if target_file_path.exists():
                 uuid_small = str(uuid.uuid4())[:8]
                 target_file_path = pathlib.Path(
@@ -267,13 +244,22 @@ def dump_card(
                     )
                 )
             if media_type == 'Video' and do_create_premiere_folders:
-                target_file_path = pathlib.Path(
-                    video_folder
-                ).joinpath(
-                    '%s/%s-%s%s' % (
-                        source_device_type, folder_initials, file.stem, file.suffix,
+                if source_device_type == "Insta360":
+                    target_file_path = pathlib.Path(
+                        video_folder
+                    ).joinpath(
+                        '%s/%s%s' % (
+                            source_device_type, file.stem, file.suffix,
+                        )
                     )
-                )
+                else:
+                    target_file_path = pathlib.Path(
+                        video_folder
+                    ).joinpath(
+                        '%s/%s-%s%s' % (
+                            source_device_type, folder_initials, file.stem, file.suffix,
+                        )
+                    )
                 if target_file_path.exists():
                     uuid_small = str(uuid.uuid4())[:8]
                     target_file_path = pathlib.Path(

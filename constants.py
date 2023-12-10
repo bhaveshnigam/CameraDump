@@ -9,7 +9,6 @@ DEVICE_TYPE_FOLDER_MAP = {
     'SONY': 'A6400',
     'Z6': 'Z6',
     'Nikon Z6': 'Z6',
-    'Nikon': 'Z6',
     'Z 6': 'Z6',
     'Nikon Z 6': 'Z6',
     'NIKON Z 6': 'Z6',
@@ -18,10 +17,18 @@ DEVICE_TYPE_FOLDER_MAP = {
     'Insta360': 'Insta360',
     'OneR': 'Insta360',
     'Insta360GO3': 'Insta360',
+    'Z8': 'Z8',
+    'Nikon Z8': 'Z8',
+    'Nikon': 'Z8',
+    'Z 8': 'Z8',
+    'Nikon Z 8': 'Z8',
+    'NIKON Z 8': 'Z8',
+    'NIKON Z8': 'Z8',
+    'NIKON Z8 ': 'Z8',
 }
 
 SUPPORTED_DEVICE_NAMES = [
-    'Z6',
+    "Z8",
     'Drone',
     'iPhone',
     'ThirdPartySource',

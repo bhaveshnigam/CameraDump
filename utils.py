@@ -269,19 +269,12 @@ def dump_card(
                             source_device_type, folder_initials, file.stem, uuid_small, file.suffix,
                         )
                     )
-            if clear_files_after_copy:
-                move(str(file), str(target_file_path))
-            else:
-                copy2(str(file), str(target_file_path))
+            # if clear_files_after_copy:
+            #     move(str(file), str(target_file_path))
+            # else:
+            # Always copy - moving is dangerous and in case of a mishap, the original files will be lost
+            copy2(str(file), str(target_file_path))
 
-    # clear_empty_folders('%s/%s' % (destination_path, 'Photo'))
-    # clear_empty_folders('%s/%s' % (destination_path, 'Video'))
-    # if clear_files_after_copy:
-    #     try:
-    #         rmtree(pathlib.Path(source_card_path).expanduser(), ignore_errors=True)
-    #     except Exception as err:
-    #         print('Error removing all files from source file folder, err: %s' % err)
-    #         pass
     return True
 
 

@@ -2,7 +2,6 @@ DEVICE_TYPE_FOLDER_MAP = {
     'iPhone': 'iPhone',
     'Mavic': 'Drone',
     'MavicAir': 'Drone',
-    'DJI': 'Drone',
     'Sony': 'A6400',
     'Sony A6400': 'A6400',
     'A6400': 'A6400',
@@ -33,5 +32,5 @@ SUPPORTED_DEVICE_NAMES = [
 ]
 
 universal_skip_file_type = [
-    'THM', '.db', '.Trashes', '.list',
+    'THM', '.db', '.Trashes', '.list', 'SCR',
 ]

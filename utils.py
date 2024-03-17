@@ -174,9 +174,10 @@ def dump_card(
                 media_type = 'Video'
             elif 'image' in metadata_string.lower():
                 media_type = 'Photo'
-
-            if str(file).lower().endswith('.lrf'):
+            elif str(file).lower().endswith('.lrf'):
                 media_type = 'Video'
+            elif str(file).lower().endswith('.jpg'):
+                media_type = 'Photo'
 
             if not media_type:
                 continue

@@ -175,6 +175,9 @@ def dump_card(
             elif 'image' in metadata_string.lower():
                 media_type = 'Photo'
 
+            if str(file).lower().endswith('.lrf'):
+                media_type = 'Video'
+
             if not media_type:
                 continue
 
@@ -215,7 +218,7 @@ def dump_card(
                         break
 
             folder_initials = get_initials(backup_folder_name)
-            if source_device_type == "Insta360":
+            if source_device_type in ["Insta360", "Pocket 3"]:
                 target_file_path = pathlib.Path(
                 destination_path
             ).joinpath(
@@ -244,7 +247,7 @@ def dump_card(
                     )
                 )
             if media_type == 'Video' and do_create_premiere_folders:
-                if source_device_type == "Insta360":
+                if source_device_type in ["Insta360", "Pocket 3"]:
                     target_file_path = pathlib.Path(
                         video_folder
                     ).joinpath(

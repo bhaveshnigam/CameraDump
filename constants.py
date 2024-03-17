@@ -19,6 +19,7 @@ DEVICE_TYPE_FOLDER_MAP = {
     "NIKON Z 8  ": "Z8",
     'NIKON Z8': 'Z8',
     'NIKON Z8 ': 'Z8',
+    "SD_Card": "Pocket 3",
 }
 
 SUPPORTED_DEVICE_NAMES = [
@@ -28,6 +29,7 @@ SUPPORTED_DEVICE_NAMES = [
     'ThirdPartySource',
     'A6400',
     'Insta360',
+    'Pocket 3'
 ]
 
 universal_skip_file_type = [
